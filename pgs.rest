@@ -1,0 +1,190 @@
+@baseUrl={{$dotenv DEV_URL}}
+@tenant={{$dotenv TENANT}}
+@username={{$dotenv USER}}
+@password={{$dotenv PASSWORD}}
+@requestor=pgsRest
+@correlation=20230913000000
+@costCenter=2014615
+@imageColor=true
+
+
+
+
+
+
+
+
+### Create ShoppingCart
+# @name shopCart
+
+PUT {{baseUrl}}/paymentcart/{{tenant}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "requestor": "{{requestor}}",
+  "correlationId": "{{correlation}}",
+  "amount": "100",
+  "currency": "EUR",
+  "reason": "One day parking.",
+  "reference": "myshop-cart-id",
+  "successCallbackUrl": "http://localhost:3001/success",
+  "failureCallbackUrl": "http://localhost:3001/failure",
+  "customStyle": "input[type=\"submit\"] {\n    background-color: blue;\n}",
+  "tokenRequired": true
+}
+
+@cartId = {{shopCart.response.body.$.cartId}}
+@pgsToken = {{shopCart.response.body.$.pgsToken}}
+
+
+
+### Get ShoppingCart Status
+GET {{baseUrl}}/status/{{tenant}}/{{cartId}}/{{correlation}}/{{requestor}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Get Tokenart Status
+GET {{baseUrl}}/status/{{tenant}}/{{tokencartId}}/{{correlation}}/{{requestor}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Get Payment types
+GET {{baseUrl}}/paymenttypes/{{tenant}}/{{cartId}}/{{correlation}}/{{requestor}}/en-Gb
+    ?costCenter={{costCenter}}
+    &imageColor={{imageColor}}
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+
+
+
+
+
+
+
+### Start Tokenization Create ClientHandle
+# @name tokenization
+
+PUT {{baseUrl}}/tokenization/{{tenant}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "requestor": "shop-2215",
+  "correlationId": "1231%saasdfa-session-id",
+  "locale": "en-Gb",
+  "successCallbackUrl": "http://localhost:3001/success",
+  "failureCallbackUrl": "http://localhost:3001/failure",
+  "customStyle": "input[type=\"submit\"] {\n    background-color: blue;\n}"
+}
+
+@pgsToken = {{tokenization.response.body.$.pgsToken}}
+@clientHandle = {{tokenization.response.body.$.clientHandle}}
+
+
+
+### Get Card info from tokenization
+GET {{baseUrl}}/card/{{tenant}}/{{clientHandle}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Get Tokenization types
+GET {{baseUrl}}/tokenizationtypes/{{tenant}}/{{clientHandle}}/{{correlation}}/{{requestor}}/en-Gb
+    ?costCenter={{costCenter}}
+    &imageColor={{imageColor}}
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Create TokenCart
+# @name tokenCart
+
+PUT {{baseUrl}}/tokencart/{{tenant}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "requestor": "{{requestor}}",
+  "correlationId": "{{correlation}}",
+  "amount": "100",
+  "currency": "EUR",
+  "reason": "One day parking.",
+  "reference": "myshop-cart-id"
+}
+
+@tokencartId = {{tokenCart.response.body.$.cartId}}
+
+
+
+### Payment TokenCart with token
+PUT {{baseUrl}}/paymentwithtoken/{{tenant}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "requestor": "{{requestor}}",
+  "correlationId": "{{correlation}}",
+  "cartId": "{{tokencartId}}",
+  "pgsToken": "{{pgsToken}}",
+  "transactionInitiator": "CUSTOMER"
+}
+
+
+
+### Token validation
+PUT {{baseUrl}}/tokenvalidity/{{tenant}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "requestor": "{{requestor}}",
+  "correlationId": "{{correlation}}",
+  "pgsToken": "{{pgsToken}}",
+  "validatePsp": true
+}
+
+
+
+### Token deletion
+DELETE {{baseUrl}}/tokendelete/{{tenant}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "requestor": "{{requestor}}",
+  "correlationId": "{{correlation}}",
+  "pgsToken": "{{pgsToken}}"
+}
+
+
+
+
+### Refund Full
+PUT {{baseUrl}}/refund/full/{{tenant}}/{{tokencartId}}/FullRefund HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Refund Partial
+@amount=50
+PUT {{baseUrl}}/refund/partial/{{tenant}}/{{tokencartId}}/PartialRefund/{{amount}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
