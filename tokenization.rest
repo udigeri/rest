@@ -26,7 +26,7 @@ Accept: application/json
   "requestor": "shop-2215",
   "correlationId": "1231%saasdfa-session-id",
   "locale": "en-Gb",
-  "successCallbackUrl": "http://localhost:3001/success",
+  "successCallbackUrl": "http://localhost:3001/tokenized",
   "failureCallbackUrl": "http://localhost:3001/failure",
   "customStyle": "input[type=\"submit\"] {\n    background-color: blue;\n}"
 }
@@ -93,22 +93,6 @@ Accept: application/json
 GET {{baseUrl}}/status/{{tenant}}/{{tokencartId}}/{{correlation}}/{{requestor}} HTTP/1.1
 Authorization: Basic {{username}} {{password}}
 Accept: application/json
-
-
-
-### Payment TokenCart with token
-PUT {{baseUrl}}/paymentwithtoken/{{tenant}} HTTP/1.1
-Authorization: Basic {{username}} {{password}}
-Content-Type: application/json
-Accept: application/json
-
-{
-  "requestor": "{{requestor}}",
-  "correlationId": "{{correlation}}",
-  "cartId": "{{tokencartId}}",
-  "pgsToken": "{{pgsToken}}",
-  "transactionInitiator": "CUSTOMER"
-}
 
 
 
