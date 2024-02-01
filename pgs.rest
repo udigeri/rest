@@ -25,7 +25,7 @@ Accept: application/json
 {
   "requestor": "{{requestor}}",
   "correlationId": "{{correlation}}",
-  "amount": "100",
+  "amount": "200",
   "currency": "EUR",
   "reason": "One day parking.",
   "reference": "myshop-cart-id",
@@ -89,6 +89,22 @@ Accept: application/json
   "correlationId": "{{correlation}}",
   "pgsToken": "{{pgsToken}}"
 }
+
+
+
+### Refund Full
+PUT {{baseUrl}}/refund/full/{{tenant}}/{{cartId}}/FullRefund HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Refund Partial
+@amount=100
+PUT {{baseUrl}}/refund/partial/{{tenant}}/{{cartId}}/PartialRefund/{{amount}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
 
 
 
