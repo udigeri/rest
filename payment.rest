@@ -3,10 +3,12 @@
 @username={{$dotenv USER}}
 @password={{$dotenv PASSWORD}}
 @requestor=pgsRest
-@correlation=20230927000000
+@correlation=20240122000000
 @costCenter=2014615
 @imageColor=true
-
+@amountPayment=1000
+@amountToken=400
+@amountRefund=70
 
 
 
@@ -25,9 +27,9 @@ Accept: application/json
 {
   "requestor": "{{requestor}}",
   "correlationId": "{{correlation}}",
-  "amount": "100",
+  "amount": "{{amountPayment}}",
   "currency": "EUR",
-  "reason": "One day parking.",
+  "reason": "Daily parking.",
   "reference": "myshop-cart-id",
   "successCallbackUrl": "http://localhost:3001/success",
   "failureCallbackUrl": "http://localhost:3001/failure",
@@ -47,19 +49,34 @@ Accept: application/json
 
 
 
-### Get Tokencart Status
-GET {{baseUrl}}/status/{{tenant}}/{{tokencartId}}/{{correlation}}/{{requestor}} HTTP/1.1
-Authorization: Basic {{username}} {{password}}
-Accept: application/json
-
-
-
 ### Get Payment types
 GET {{baseUrl}}/paymenttypes/{{tenant}}/{{cartId}}/{{correlation}}/{{requestor}}/en-Gb
     ?costCenter={{costCenter}}
     &imageColor={{imageColor}}
 Authorization: Basic {{username}} {{password}}
 Accept: application/json
+
+
+
+### Refund Full
+PUT {{baseUrl}}/refund/full/{{tenant}}/{{cartId}}/Double%20booking HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+### Refund Partial
+PUT {{baseUrl}}/refund/partial/{{tenant}}/{{cartId}}/Discount%20for%20customer/{{amountRefund}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
+
+
+
+
+
+
+
+
 
 
 
@@ -92,6 +109,19 @@ Accept: application/json
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Create TokenCart
 # @name tokenCart
 
@@ -103,13 +133,20 @@ Accept: application/json
 {
   "requestor": "{{requestor}}",
   "correlationId": "{{correlation}}",
-  "amount": "200",
+  "amount": "{{amountToken}}",
   "currency": "EUR",
-  "reason": "One day parking.",
+  "reason": "Monthly parking.",
   "reference": "myshop-cart-id"
 }
 
 @tokencartId = {{tokenCart.response.body.$.cartId}}
+
+
+
+### Get Tokencart Status
+GET {{baseUrl}}/status/{{tenant}}/{{tokencartId}}/{{correlation}}/{{requestor}} HTTP/1.1
+Authorization: Basic {{username}} {{password}}
+Accept: application/json
 
 
 
@@ -137,8 +174,7 @@ Accept: application/json
 
 
 ### Refund Partial
-@amount=100
-PUT {{baseUrl}}/refund/partial/{{tenant}}/{{tokencartId}}/PartialRefund/{{amount}} HTTP/1.1
+PUT {{baseUrl}}/refund/partial/{{tenant}}/{{tokencartId}}/PartialRefund/{{amountRefund}} HTTP/1.1
 Authorization: Basic {{username}} {{password}}
 Accept: application/json
 
