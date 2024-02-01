@@ -133,7 +133,7 @@ Accept: application/json
 
 
 ### Refund Partial
-@amount=100
+@amount=110
 PUT {{baseUrl}}/refund/partial/{{tenant}}/{{tokencartId}}/PartialRefund/{{amount}} HTTP/1.1
 Authorization: Basic {{username}} {{password}}
 Accept: application/json
