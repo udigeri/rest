@@ -1,0 +1,11 @@
+
+@xMS40tenant={{$dotenv XMS40_TENANT}}
+
+### Get all enabled tenants for xMS40 tenant
+GET http://localhost:8084/v1/{{xMS40tenant}}/tenants
+
+### Get list of available payment types in the system
+GET http://localhost:8084/v1/{{xMS40tenant}}/paymenttypes
+
+### Get configuration of specified tenant
+GET http://localhost:8084/v1/{{xMS40tenant}}/tenant/pgs-testCCV

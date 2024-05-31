@@ -25,7 +25,7 @@ Accept: application/json
 {
   "requestor": "shop-2215",
   "correlationId": "1231%saasdfa-session-id",
-  "locale": "en-Gb",
+  "locale": "en-GB",
   "successCallbackUrl": "http://localhost:3001/tokenized",
   "failureCallbackUrl": "http://localhost:3001/failure",
   "customStyle": "input[type=\"submit\"] {\n    background-color: blue;\n}"

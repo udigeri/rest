@@ -6,14 +6,9 @@
 @correlation=20240122000000
 @costCenter=2014615
 @imageColor=true
-@amountPayment=1000
-@amountToken=400
-@amountRefund=70
-
-
-
-
-
+@amountPayment=1330
+@amountToken=500
+@amountRefund=60
 
 
 ### Create ShoppingCart

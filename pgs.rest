@@ -1,15 +1,11 @@
-@baseUrl={{$dotenv DEV_URL}}
+@baseUrl={{$dotenv LOCAL_URL}}
 @tenant={{$dotenv TENANT}}
 @username={{$dotenv USER}}
 @password={{$dotenv PASSWORD}}
 @requestor=pgsRest
-@correlation=20230927000000
+@correlation=20240531000000
 @costCenter=2014615
 @imageColor=true
-
-
-
-
 
 
 
@@ -29,10 +25,10 @@ Accept: application/json
   "currency": "EUR",
   "reason": "One day parking.",
   "reference": "myshop-cart-id",
-  "successCallbackUrl": "http://localhost:3001/success",
-  "failureCallbackUrl": "http://localhost:3001/failure",
+  "successCallbackUrl": "https://preprod-pgs.scheidt-bachmann.net:8443/pgsweb/internal/web/psp/dummyShop/status/payment/success.xhtml?dswid=1",
+  "failureCallbackUrl": "https://preprod-pgs.scheidt-bachmann.net:8443/pgsweb/internal/web/psp/dummyShop/status/payment/failure.xhtml?dswid=1",
   "customStyle": "input[type=\"submit\"] {\n    background-color: blue;\n}",
-  "tokenRequired": true
+  "tokenRequired": false
 }
 
 @cartId = {{shopCart.response.body.$.cartId}}
@@ -55,7 +51,7 @@ Accept: application/json
 
 
 ### Get Payment types
-GET {{baseUrl}}/paymenttypes/{{tenant}}/{{cartId}}/{{correlation}}/{{requestor}}/en-Gb
+GET {{baseUrl}}/paymenttypes/{{tenant}}/{{cartId}}/{{correlation}}/{{requestor}}/en-GB
     ?costCenter={{costCenter}}
     &imageColor={{imageColor}}
 Authorization: Basic {{username}} {{password}}
@@ -130,7 +126,7 @@ Accept: application/json
 {
   "requestor": "shop-2215",
   "correlationId": "1231%saasdfa-session-id",
-  "locale": "en-Gb",
+  "locale": "en-GB",
   "successCallbackUrl": "http://localhost:3001/success",
   "failureCallbackUrl": "http://localhost:3001/failure",
   "customStyle": "input[type=\"submit\"] {\n    background-color: blue;\n}"
