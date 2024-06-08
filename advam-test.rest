@@ -1,0 +1,33 @@
+@baseUrl=http://localhost:8086
+@version=v1
+
+
+### Tokenization init
+POST {{baseUrl}}/{{version}}/tokenization/init HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "pgsTenant": "pgs-testAdvam",
+    "pgsTenantUuid": "3561b826-f378-4d38-9309-9b865aa2a888",
+    "pgsTenantScheme": "pgs_advam",
+    "paymentTypeUuid": "406721d8-1e90-11ef-ad76-63324cf5436d",
+    "clientHandle": "8ab25c68-4829-401d-83c7-7dbacf8aa7e4",
+    "mode": "test",
+    "requestor": "SmartWebPay",
+    "correlationId": "1231%saasdfa-session-id",
+    "locale": "en-US"
+}
+
+### Management info
+GET {{baseUrl}}/management/info HTTP/1.1
+### Management health
+GET {{baseUrl}}/management/health HTTP/1.1
+### Management loggers
+GET {{baseUrl}}/management/loggers HTTP/1.1
+### Management metrics list
+GET {{baseUrl}}/management/metrics HTTP/1.1
+### Management metrics prcess usage
+GET {{baseUrl}}/management/metrics/process.cpu.usage HTTP/1.1
+### Management metrics prcess usage
+GET {{baseUrl}}/swagger-ui.html HTTP/1.1
