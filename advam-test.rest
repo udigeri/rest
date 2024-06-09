@@ -9,15 +9,35 @@ Accept: application/json
 
 {
     "pgsTenant": "pgs-testAdvam",
-    "pgsTenantUuid": "3561b826-f378-4d38-9309-9b865aa2a888",
+    "pgsTenantUuid": "d573af00-3479-4b6c-973d-3e52edfa8b41",
     "pgsTenantScheme": "pgs_advam",
-    "paymentTypeUuid": "406721d8-1e90-11ef-ad76-63324cf5436d",
+    "paymentTypeUuid": "cfd15f4c-25ce-11ef-a15c-c69e8ecb673d",
     "clientHandle": "8ab25c68-4829-401d-83c7-7dbacf8aa7e4",
     "mode": "test",
     "requestor": "SmartWebPay",
     "correlationId": "1231%saasdfa-session-id",
     "locale": "en-US"
 }
+
+
+### Tokenization process
+POST {{baseUrl}}/{{version}}/tokenization/process HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "pgsTenant": "pgs-testAdvam",
+    "pgsTenantScheme": "pgs_advam",
+    "paymentTypeUuid": "cfd15f4c-25ce-11ef-a15c-c69e8ecb673d",
+    "clientHandle": "8ab25c68-4829-401d-83c7-7dbacf8aa7e4",
+    "ProviderParameters": [
+        {
+            "key": "SessionId",
+            "value": "{4cd6f59b-b5df-4e63-93c4-ee46ef5ba36b}"
+        }
+    ]
+}
+
 
 ### Management info
 GET {{baseUrl}}/management/info HTTP/1.1
